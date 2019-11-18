@@ -1,0 +1,15 @@
+{
+  "name": "search-todo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claraonmars/search-todo.git"
+  },
+  "author": "Clara Koh",
+  "license": "ISC"
+}
