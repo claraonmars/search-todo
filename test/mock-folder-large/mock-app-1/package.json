@@ -1,0 +1,26 @@
+{
+  "name": "project-4",
+  "private": true,
+  "dependencies": {
+    "@rails/webpacker": "3.5",
+    "babel-preset-react": "^6.24.1",
+    "chart.js": "^2.7.3",
+    "mdbreact": "^4.8.3",
+    "prop-types": "^15.6.2",
+    "qrcode-reader.js": "^1.0.3",
+    "react": "^16.6.3",
+    "react-chartjs": "^1.2.0",
+    "react-chartjs-2": "^2.7.4",
+    "react-chartkick": "^0.3.0",
+    "react-device-detect": "^1.6.1",
+    "react-dom": "^16.6.3",
+    "react-meta-tags": "^0.7.2",
+    "react-qr-reader": "^2.1.1",
+    "react-router-dom": "^4.3.1",
+    "request": "^2.88.0",
+    "whatwg-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "webpack-dev-server": "2.11.2"
+  }
+}
