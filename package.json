@@ -4,7 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "test"
+    "seed":"node seed-data.js ./test/mock-folder",
+    "seed-large":"node seed-data.js ./test/mock-folder-large",
+    "test-async": "node search-async.js ./test/mock-folder",
+    "test-sync": "node search-sync.js ./test/mock-folder",
+    "test-async-large": "node search-async.js ./test/mock-folder-large",
+    "performance-async": "node search-async.js ./test/mock-folder performance",
+    "performance-sync": "node search-sync.js ./test/mock-folder performance",
+    "performance-async-large": "node search-async.js ./test/mock-folder-large performance"
   },
   "repository": {
     "type": "git",
