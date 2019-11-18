@@ -116,12 +116,12 @@ walk(folder, function(err, files) {
   if (err) throw err;
   totalFiles = files.length;
   processFiles(files)
-    .then(val => {
+    .then(data => {
       process.stdout.clearLine();
       process.stdout.cursorTo(0);
-      val.map(value => {
-        console.log(value.path);
-        value.todos.forEach(todo=> console.log(todo.trim()));
+      data.map(file => {
+        console.log('\x1b[33m%s\x1b[0m', file.path);
+        file.todos.forEach(todo=> console.log('\t', '\x1b[0m', todo.trim()));
       });
     })
     .catch(err => console.log(err));
