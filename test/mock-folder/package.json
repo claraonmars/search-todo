@@ -1,0 +1,36 @@
+{
+    "name": "mock-folder",
+    "version": "0.0.0",
+    "description": "mock-folder",
+    "private": true,
+    "scripts": {},
+    "dependencies": {
+        "axios": "^0.18.1",
+        "downshift": "^3.2.10",
+        "formik": "^1.5.2",
+        "lodash.clonedeep": "^4.5.0",
+        "lodash.find": "^4.6.0",
+        "lodash.get": "^4.4.2",
+        "lodash.isequal": "^4.5.0",
+        "lodash.isundefined": "^3.0.1",
+        "lodash.memoize": "^4.1.2",
+        "lodash.merge": "^4.6.2",
+        "node-sass": "^4.11.0",
+        "prop-types": "^15.6.0",
+        "react": "^16.8.6"
+    },
+    "devDependencies": {
+        "@testing-library/jest-dom": "^4.1.0",
+        "@testing-library/react": "^9.1.3",
+        "eslint-config-prettier": "^4.1.0",
+        "eslint-plugin-prettier": "^3.0.1",
+        "husky": "^1.3.1",
+        "prettier": "^1.16.4",
+        "pretty-quick": "^1.10.0"
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions",
+        "not ie <= 8"
+    ]
+}
