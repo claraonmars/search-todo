@@ -2,24 +2,34 @@ const fs = require("fs");
 const path = require("path");
 const MAX_LOAD = 200;
 
+// for perfomance tracking
+const performance = process.argv[3];
+const hrstart = process.hrtime();
+let hrend = 0;
+let totalFilesMatched = 0;
+let totalFilesScanned = 0;
+
+const startingFolder = process.argv[2];
+
 let totalFiles = 0;
 let currentFileCount = 0;
 
-const printProgress = current => {
-  const loaded = (50 / totalFiles) * current;
+// prints loading bar
+const printProgress = currentFile => {
+  const loadedFiles = (50 / totalFiles) * currentFile;
 
-  if (loaded < currentFileCount) {
+  if (loadedFiles < currentFileCount) {
     process.stdout.clearLine();
     process.stdout.cursorTo(0);
     process.stdout.write(
       "Loading:" +
         "[" +
-        "-".repeat(Math.ceil(loaded)) +
-        " ".repeat(50 - Math.floor(loaded)) +
+        "-".repeat(Math.ceil(loadedFiles)) +
+        " ".repeat(50 - Math.floor(loadedFiles)) +
         "]"
     );
   }
-  currentFileCount = loaded;
+  currentFileCount = loadedFiles;
 };
 
 // returns all directories
@@ -35,6 +45,7 @@ const walk = (dir, complete) => {
       const filePath = path.resolve(dir, file);
       fs.stat(filePath, (err, stat) => {
         if (stat && stat.isFile()) {
+          totalFilesScanned++;
           if (path.extname(filePath) !== ".map") {
             results.push(filePath);
           }
@@ -61,6 +72,7 @@ const searchFile = value => {
       data += chunk;
       matchFound = data.indexOf("TODO") !== -1;
       if (matchFound) {
+        totalFilesMatched++;
         readStream.destroy();
       } else {
         data = "";
@@ -110,9 +122,7 @@ const processFiles = files => {
   });
 };
 
-const folder = process.argv[2];
-
-walk(folder, function(err, files) {
+walk(startingFolder, function(err, files) {
   if (err) throw err;
   totalFiles = files.length;
   processFiles(files)
@@ -120,9 +130,15 @@ walk(folder, function(err, files) {
       process.stdout.clearLine();
       process.stdout.cursorTo(0);
       data.map(file => {
-        console.log('\x1b[33m%s\x1b[0m', file.path);
-        file.todos.forEach(todo=> console.log('\t', '\x1b[0m', todo.trim()));
+        console.log("\x1b[33m%s\x1b[0m", file.path);
+        file.todos.forEach(todo => console.log("\t", "\x1b[0m", todo.trim()));
       });
+      if (performance) {
+        hrend = process.hrtime(hrstart);
+        console.log(`Time: ${hrend}`);
+        console.log(`Files found: ${totalFilesScanned}`);
+        console.log(`Files matched: ${totalFilesMatched}`);
+      }
     })
     .catch(err => console.log(err));
 });
