@@ -2,6 +2,26 @@ const fs = require("fs");
 const path = require("path");
 const MAX_LOAD = 200;
 
+let totalFiles = 0;
+let currentFileCount = 0;
+
+const printProgress = current => {
+  const loaded = (50 / totalFiles) * current;
+
+  if (loaded < currentFileCount) {
+    process.stdout.clearLine();
+    process.stdout.cursorTo(0);
+    process.stdout.write(
+      "Loading:" +
+        "[" +
+        "-".repeat(Math.ceil(loaded)) +
+        " ".repeat(50 - Math.floor(loaded)) +
+        "]"
+    );
+  }
+  currentFileCount = loaded;
+};
+
 // returns all directories
 const walk = (dir, complete) => {
   let results = [];
@@ -47,7 +67,7 @@ const searchFile = value => {
       }
     });
     readStream.on("error", function(err) {
-      reject(err);
+      console.log(err);
     });
     readStream.on("close", () => {
       resolve(data);
@@ -62,18 +82,22 @@ const processFiles = files => {
   const results = [];
 
   return new Promise((resolve, reject) => {
-    const handleSearchResults = (fileContent, filePath) => {
-      if (fileContent) {
-        results.push(filePath);
+    const handleSearchResults = currentFileIndex => values => {
+      if (values) {
+        results.push({
+          path: files[currentFileIndex],
+          todos: values.split("\n").filter(content => content.includes("TODO"))
+        });
       }
       currentQueueNum--;
+      printProgress(currentFileIndex);
       getBatchedFiles();
     };
 
     const getBatchedFiles = () => {
       if (currentQueueNum < MAX_LOAD && currentFileIndex < files.length) {
         searchFile(files[currentFileIndex])
-          .then(result=>handleSearchResults(result, files[currentFileIndex]))
+          .then(handleSearchResults(currentFileIndex))
           .catch(err => console.log(err));
         currentFileIndex++;
         currentQueueNum++;
@@ -93,8 +117,11 @@ walk(folder, function(err, files) {
   totalFiles = files.length;
   processFiles(files)
     .then(val => {
+      process.stdout.clearLine();
+      process.stdout.cursorTo(0);
       val.map(value => {
-        console.log(value);
+        console.log(value.path);
+        value.todos.forEach(todo=> console.log(todo.trim()));
       });
     })
     .catch(err => console.log(err));
