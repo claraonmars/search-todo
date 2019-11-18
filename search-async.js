@@ -129,15 +129,18 @@ walk(startingFolder, function(err, files) {
     .then(data => {
       process.stdout.clearLine();
       process.stdout.cursorTo(0);
-      data.map(file => {
-        console.log("\x1b[33m%s\x1b[0m", file.path);
-        file.todos.forEach(todo => console.log("\t", "\x1b[0m", todo.trim()));
-      });
+      if(!performance){
+        data.map(file => {
+          console.log("\x1b[33m%s\x1b[0m", file.path);
+          file.todos.forEach(todo => console.log("\t", "\x1b[0m", todo.trim()));
+        });
+      }
       if (performance) {
         hrend = process.hrtime(hrstart);
         console.log(`Time: ${hrend}`);
         console.log(`Files found: ${totalFilesScanned}`);
         console.log(`Files matched: ${totalFilesMatched}`);
+        console.log(`Memory used: ${totalFilesMatched}`);
       }
     })
     .catch(err => console.log(err));

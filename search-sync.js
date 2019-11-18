@@ -17,11 +17,13 @@ const walk = dir => {
       const matched = fileContent.indexOf("TODO") !== -1;
       if (matched && path.extname(filePath) !== ".map") {
         totalFilesMatched++;
+        if (!performance) {
         const allTodos = fileContent
           .split("\n")
           .filter(content => content.includes("TODO"));
         console.log("\x1b[33m%s\x1b[0m", filePath);
         allTodos.forEach(todo => console.log("\t", "\x1b[0m", todo.trim()));
+        }
       }
     } else if (stat && stat.isDirectory()) {
       walk(filePath);
@@ -35,6 +37,7 @@ walk(folder);
 if (performance) {
   hrend = process.hrtime(hrstart);
   console.log(`Time: ${hrend}`);
-  console.log(`Files found: ${totalFilesMatched}`);
   console.log(`Files scanned: ${totalFilesScanned}`);
+  console.log(`Files found: ${totalFilesMatched}`);
+  console.log(`Memory used: ${process.memoryUsage().heapUsed}`);
 }
