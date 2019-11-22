@@ -36,7 +36,11 @@ const printProgress = currentFile => {
 const walk = (dir, complete) => {
   let results = [];
   fs.readdir(dir, (err, files) => {
-    if (err) return complete(err);
+    if(!fs.existsSync(dir))  {
+      console.log('Directory does not exist')
+      return
+    }
+    if(err) return complete(err);
 
     let pending = files.length;
     if (!pending) return complete(null, results);

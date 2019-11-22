@@ -7,6 +7,10 @@ let totalFilesScanned = 0;
 const performance = process.argv[3];
 
 const walk = dir => {
+  if(!fs.existsSync(dir)) {
+    console.log('Directory does not exist');
+    return;
+  }
   const files = fs.readdirSync(dir);
   files.forEach(file => {
     const filePath = path.resolve(dir, file);
